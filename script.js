@@ -33,11 +33,19 @@ const state = {
 // ===================================
 
 async function fetchSheetData(tabName) {
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${tabName}?key=${CONFIG.API_KEY}`;
+    const encodedTab = encodeURIComponent(tabName);
+    const range = `${encodedTab}!A1:Z`;
+
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${range}?key=${CONFIG.API_KEY}`;
     
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        if (!response.ok) {
+            const errText = await response.text();
+            throw new Error(`HTTP ${response.status}: ${errText}`);
+        }
+
         const data = await response.json();
         return parseSheetData(data.values);
     } catch (error) {
@@ -45,6 +53,7 @@ async function fetchSheetData(tabName) {
         throw error;
     }
 }
+
 
 function parseSheetData(rows) {
     if (!rows || rows.length === 0) return [];

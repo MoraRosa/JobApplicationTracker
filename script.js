@@ -4,7 +4,7 @@
 
 const CONFIG = {
     // Replace these with your actual values
-    API_KEY: 'AIzaSyDXwZTmri1pArjTts-SsoQFfwb55OK2kxo',
+    API_KEY: 'AIzaSyD5uQ1BClLALWoTLwBo7C3ZN__IE2G9h4U',
     SHEET_ID: '1PXE8EwBdT9WruI6JB8kWhT5TV70xEEEw',
     
     // Tab names (must match your Google Sheet tabs exactly)

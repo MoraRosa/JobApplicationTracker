@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Hunt Dashboard ☕</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1>☕ Job Hunt Dashboard</h1>
+            <div class="header-controls">
+                <button id="refreshBtn" class="icon-btn" title="Refresh data">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                    </svg>
+                </button>
+                <button id="themeToggle" class="icon-btn" title="Toggle theme">
+                    <svg id="sunIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    <svg id="moonIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Brewing your data...</p>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="error-state" style="display: none;">
+            <p>☹️ Failed to load data. Check your API key and Sheet ID.</p>
+            <button onclick="location.reload()" class="btn-primary">Try Again</button>
+        </div>
+
+        <!-- Main Content -->
+        <main id="mainContent" style="display: none;">
+            
+            <!-- Stats Overview -->
+            <section class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="totalApps">0</div>
+                        <div class="stat-label">Total Applications</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">📝</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="appliedCount">0</div>
+                        <div class="stat-label">Applied</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">💼</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="interviewCount">0</div>
+                        <div class="stat-label">Interviews</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card highlight">
+                    <div class="stat-icon">🎉</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="offerCount">0</div>
+                        <div class="stat-label">Offers</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">❌</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="rejectedCount">0</div>
+                        <div class="stat-label">Rejected</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card warning">
+                    <div class="stat-icon">⏰</div>
+                    <div class="stat-content">
+                        <div class="stat-value" id="staleCount">0</div>
+                        <div class="stat-label">Stale Apps</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-card">
+                    <h3>Applications Over Time</h3>
+                    <canvas id="timelineChart"></canvas>
+                </div>
+                
+                <div class="chart-card">
+                    <h3>Status Distribution</h3>
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Navigation Tabs -->
+            <section class="tabs-section">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="applications">Applications</button>
+                    <button class="tab-btn" data-tab="resumes">Resume Library</button>
+                    <button class="tab-btn" data-tab="templates">Follow-Up Templates</button>
+                </div>
+            </section>
+
+            <!-- Applications Tab -->
+            <section id="applicationsTab" class="tab-content active">
+                <div class="table-controls">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Search companies, roles, or locations...">
+                    </div>
+                    <div class="filter-group">
+                        <select id="statusFilter">
+                            <option value="">All Statuses</option>
+                        </select>
+                        <select id="staleFilter">
+                            <option value="">All Apps</option>
+                            <option value="STALE">Stale Only</option>
+                            <option value="ACTIVE">Active Only</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table class="applications-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="Company Name">Company</th>
+                                <th data-sort="Job Title">Role</th>
+                                <th data-sort="Location">Location</th>
+                                <th data-sort="Application Status">Status</th>
+                                <th data-sort="Date Applied">Applied</th>
+                                <th data-sort="Days Since Applied">Days</th>
+                                <th data-sort="Priority Score">Priority</th>
+                                <th data-sort="Stale App Flag">Flag</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applicationsTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Resumes Tab -->
+            <section id="resumesTab" class="tab-content">
+                <div class="resume-grid" id="resumeGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+            <!-- Templates Tab -->
+            <section id="templatesTab" class="tab-content">
+                <div class="templates-grid" id="templatesGrid">
+                    <!-- Populated by JS -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Application Detail Modal -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <div id="modalBody">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -5,7 +5,7 @@
 const CONFIG = {
     // Replace these with your actual values
     API_KEY: 'AIzaSyD5uQ1BClLALWoTLwBo7C3ZN__IE2G9h4U',
-    SHEET_ID: '1PXE8EwBdT9WruI6JB8kWhT5TV70xEEEw',
+    SHEET_ID: '1gh1WEjfYoBb91ZoySapr3GRv13c84tHu8YdY8pXB4Nw',
     
     // Tab names (must match your Google Sheet tabs exactly)
     TABS: {
@@ -33,19 +33,11 @@ const state = {
 // ===================================
 
 async function fetchSheetData(tabName) {
-    const encodedTab = encodeURIComponent(tabName);
-    const range = `${encodedTab}!A1:Z`;
-
-    const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${range}?key=${CONFIG.API_KEY}`;
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${tabName}?key=${CONFIG.API_KEY}`;
     
     try {
         const response = await fetch(url);
-
-        if (!response.ok) {
-            const errText = await response.text();
-            throw new Error(`HTTP ${response.status}: ${errText}`);
-        }
-
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
         return parseSheetData(data.values);
     } catch (error) {
@@ -53,7 +45,6 @@ async function fetchSheetData(tabName) {
         throw error;
     }
 }
-
 
 function parseSheetData(rows) {
     if (!rows || rows.length === 0) return [];

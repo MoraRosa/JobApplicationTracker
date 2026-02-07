@@ -39,14 +39,17 @@ async function fetchSheetData(tabName) {
         const response = await fetch(url);
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const data = await response.json();
-        return parseSheetData(data.values);
+        
+        // Only require Company Name for Applications tab
+        const requireCompanyName = tabName === CONFIG.TABS.APPLICATIONS;
+        return parseSheetData(data.values, requireCompanyName);
     } catch (error) {
         console.error(`Error fetching ${tabName}:`, error);
         throw error;
     }
 }
 
-function parseSheetData(rows) {
+function parseSheetData(rows, requireCompanyName = false) {
     if (!rows || rows.length === 0) return [];
     
     const headers = rows[0];
@@ -62,9 +65,18 @@ function parseSheetData(rows) {
             obj[header] = row[index] || '';
         });
         
-        // Only include rows that have at least a company name
-        if (obj['Company Name'] && obj['Company Name'].trim()) {
-            data.push(obj);
+        // Filter logic based on tab type
+        if (requireCompanyName) {
+            // For Applications: only include rows with company name
+            if (obj['Company Name'] && obj['Company Name'].trim()) {
+                data.push(obj);
+            }
+        } else {
+            // For Templates/Resumes: include any row with at least one non-empty field
+            const hasData = Object.values(obj).some(val => val && val.trim());
+            if (hasData) {
+                data.push(obj);
+            }
         }
     }
     

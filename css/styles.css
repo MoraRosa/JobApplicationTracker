@@ -213,6 +213,17 @@ body {
     opacity: 0.9;
 }
 
+/* Font Awesome icons in stat cards */
+.stat-icon i {
+    display: block;
+}
+
+/* Detail section icons */
+.detail-section h4 i {
+    margin-right: 0.5rem;
+    opacity: 0.8;
+}
+
 .stat-content {
     flex: 1;
 }
@@ -233,6 +244,44 @@ body {
 /* ===================================
    CHARTS SECTION
    =================================== */
+
+.date-filter-bar {
+    grid-column: 1 / -1;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.date-filter-bar label {
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.date-filter-bar select,
+.date-filter-bar input[type="date"] {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+#customDateRange {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#customDateRange span {
+    color: var(--text-muted);
+}
 
 .charts-section {
     display: grid;

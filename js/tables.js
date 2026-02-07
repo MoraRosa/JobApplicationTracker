@@ -24,12 +24,14 @@ const Tables = {
         const tbody = document.getElementById('applicationsTableBody');
         tbody.innerHTML = '';
         
-        if (State.filteredApplications.length === 0) {
+        const apps = Filters.getPaginatedData();
+        
+        if (apps.length === 0) {
             tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">No applications found</td></tr>';
             return;
         }
         
-        State.filteredApplications.forEach(app => {
+        apps.forEach(app => {
             const tr = document.createElement('tr');
             tr.onclick = () => this.showApplicationDetail(app);
             
@@ -65,7 +67,7 @@ const Tables = {
             </div>
             
             <div class="detail-section">
-                <h4>📋 Job Details</h4>
+                <h4><i class="fas fa-clipboard-list"></i> Job Details</h4>
                 <div class="detail-grid">
                     <div class="detail-item">
                         <span class="detail-label">Location</span>
@@ -84,11 +86,15 @@ const Tables = {
                         <span class="detail-value">${app['Application Status'] || '-'}</span>
                     </div>
                 </div>
-                ${app['Job Posting Link'] ? `<p class="mt-2"><a href="${app['Job Posting Link']}" target="_blank" class="btn-primary">View Job Posting</a></p>` : ''}
+                <div class="modal-buttons">
+                    ${app['Job Posting Link'] ? `<a href="${app['Job Posting Link']}" target="_blank" rel="noopener noreferrer" class="btn-modal"><i class="fas fa-file-alt"></i> Job Posting</a>` : ''}
+                    ${app['LinkedIn Job Link'] ? `<a href="${app['LinkedIn Job Link']}" target="_blank" rel="noopener noreferrer" class="btn-modal"><i class="fab fa-linkedin"></i> LinkedIn</a>` : ''}
+                    ${app['Company Website'] ? `<a href="${app['Company Website']}" target="_blank" rel="noopener noreferrer" class="btn-modal"><i class="fas fa-globe"></i> Company Site</a>` : ''}
+                </div>
             </div>
             
             <div class="detail-section">
-                <h4>💰 Compensation</h4>
+                <h4><i class="fas fa-dollar-sign"></i> Compensation</h4>
                 <div class="detail-grid">
                     <div class="detail-item">
                         <span class="detail-label">Salary Range</span>
@@ -102,7 +108,7 @@ const Tables = {
             </div>
             
             <div class="detail-section">
-                <h4>📄 Application Materials</h4>
+                <h4><i class="fas fa-file-alt"></i> Application Materials</h4>
                 <div class="detail-grid">
                     <div class="detail-item">
                         <span class="detail-label">Resume Used</span>
@@ -117,7 +123,7 @@ const Tables = {
             
             ${app['General Notes'] ? `
             <div class="detail-section">
-                <h4>📝 Notes</h4>
+                <h4><i class="fas fa-sticky-note"></i> Notes</h4>
                 <p>${app['General Notes']}</p>
             </div>
             ` : ''}

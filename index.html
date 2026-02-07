@@ -179,6 +179,15 @@
                         <input type="text" id="searchInput" placeholder="Search companies, roles, or locations...">
                     </div>
                     <div class="filter-group">
+                        <select id="sortBy">
+                            <option value="">Sort By...</option>
+                            <option value="company-asc">Company (A-Z)</option>
+                            <option value="company-desc">Company (Z-A)</option>
+                            <option value="date-newest">Newest First</option>
+                            <option value="date-oldest">Oldest First</option>
+                            <option value="priority-high">Priority (High-Low)</option>
+                            <option value="priority-low">Priority (Low-High)</option>
+                        </select>
                         <select id="statusFilter">
                             <option value="">All Statuses</option>
                         </select>
@@ -208,6 +217,24 @@
                             <!-- Populated by JS -->
                         </tbody>
                     </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination-controls">
+                    <div class="pagination-info">
+                        Showing <span id="pageStart">0</span> - <span id="pageEnd">0</span> of <span id="totalAppsCount">0</span>
+                    </div>
+                    <div class="pagination-buttons">
+                        <button id="prevPage" class="pagination-btn" disabled><i class="fas fa-chevron-left"></i> Previous</button>
+                        <span id="pageInfo">Page 1</span>
+                        <button id="nextPage" class="pagination-btn" disabled>Next <i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <select id="rowsPerPage">
+                        <option value="25">25 per page</option>
+                        <option value="50">50 per page</option>
+                        <option value="100" selected>100 per page</option>
+                        <option value="all">Show All</option>
+                    </select>
                 </div>
             </section>
 

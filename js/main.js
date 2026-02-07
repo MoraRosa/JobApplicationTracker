@@ -71,6 +71,7 @@ const App = {
         Tables.renderResumes();
         Tables.renderTemplates();
         Filters.populateFilters();
+        Filters.updatePagination();
     },
 
     /**
@@ -139,6 +140,12 @@ const App = {
         document.getElementById('searchInput').addEventListener('input', () => Filters.applyFilters());
         document.getElementById('statusFilter').addEventListener('change', () => Filters.applyFilters());
         document.getElementById('staleFilter').addEventListener('change', () => Filters.applyFilters());
+        document.getElementById('sortBy').addEventListener('change', () => Filters.applySorting());
+        
+        // Pagination
+        document.getElementById('prevPage').addEventListener('click', () => Filters.prevPage());
+        document.getElementById('nextPage').addEventListener('click', () => Filters.nextPage());
+        document.getElementById('rowsPerPage').addEventListener('change', () => Filters.changeRowsPerPage());
         
         // Table sorting
         document.querySelectorAll('.applications-table th[data-sort]').forEach(th => {

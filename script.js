@@ -740,14 +740,6 @@ function formatSalaryRange(low, high) {
     return `${formatMoney(low)} - ${formatMoney(high)}`;
 }
 
-function getWeekStart(date) {
-    const d = new Date(date);
-    const day = d.getDay();
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
-    const monday = new Date(d.setDate(diff));
-    return monday.toISOString().split('T')[0];
-}
-
 // ===================================
 // START APP
 // ===================================

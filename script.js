@@ -186,10 +186,19 @@ function renderTimelineChart() {
     // Group by week
     const weekCounts = {};
     apps.forEach(app => {
-        const date = new Date(app['Date Applied']);
-        if (!isNaN(date)) {
-            const weekStart = getWeekStart(date);
-            weekCounts[weekStart] = (weekCounts[weekStart] || 0) + 1;
+        const dateStr = app['Date Applied'];
+        const parts = dateStr.split('/');
+        if (parts.length === 3) {
+            // Create date as YYYY-MM-DD to avoid timezone issues
+            const year = parts[2];
+            const month = parts[0].padStart(2, '0');
+            const day = parts[1].padStart(2, '0');
+            const date = new Date(`${year}-${month}-${day}`);
+            
+            if (!isNaN(date)) {
+                const weekStart = getWeekStart(date);
+                weekCounts[weekStart] = (weekCounts[weekStart] || 0) + 1;
+            }
         }
     });
     
@@ -709,6 +718,15 @@ function formatDate(dateString) {
     const date = new Date(dateString);
     if (isNaN(date)) return dateString;
     return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function getWeekStart(date) {
+    const d = new Date(date);
+    d.setHours(0, 0, 0, 0); // Normalize to midnight
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Adjust to Monday
+    const monday = new Date(d.setDate(diff));
+    return monday.toISOString().split('T')[0];
 }
 
 function formatMoney(value) {

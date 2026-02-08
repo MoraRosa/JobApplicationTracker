@@ -57,6 +57,16 @@ const Tables = {
      * Show application detail modal
      */
     showApplicationDetail(app) {
+        // Debug: check what salary data we have
+        console.log('=== SALARY DEBUG ===');
+        console.log('Full app object:', app);
+        console.log('Salary Range Low:', app['Salary Range Low'], typeof app['Salary Range Low']);
+        console.log('Salary Range High:', app['Salary Range High'], typeof app['Salary Range High']);
+        console.log('My Minimum Salary:', app['My Minimum Salary'], typeof app['My Minimum Salary']);
+        console.log('Formatted Low:', Utils.formatMoney(app['Salary Range Low']));
+        console.log('Formatted High:', Utils.formatMoney(app['Salary Range High']));
+        console.log('Formatted Min:', Utils.formatMoney(app['My Minimum Salary']));
+        
         const modal = document.getElementById('detailModal');
         const modalBody = document.getElementById('modalBody');
         
@@ -87,9 +97,9 @@ const Tables = {
                     </div>
                 </div>
                 <div class="modal-buttons">
-                    ${app['Job Posting Link'] ? `<a href="${app['Job Posting Link']}" target="_blank" rel="noopener noreferrer" class="btn-modal"><i class="fas fa-file-alt"></i> Job Posting</a>` : ''}
-                    ${app['LinkedIn Job Link'] ? `<a href="${app['LinkedIn Job Link']}" target="_blank" rel="noopener noreferrer" class="btn-modal"><i class="fab fa-linkedin"></i> LinkedIn</a>` : ''}
-                    ${app['Company Website'] ? `<a href="${app['Company Website']}" target="_blank" rel="noopener noreferrer" class="btn-modal"><i class="fas fa-globe"></i> Company Site</a>` : ''}
+                    ${app['Job Posting Link'] && app['Job Posting Link'].startsWith('http') ? `<a href="${app['Job Posting Link']}" target="_blank" rel="noopener noreferrer" class="btn-modal"><i class="fas fa-file-alt"></i> Job Posting</a>` : ''}
+                    ${app['LinkedIn Job Link'] && app['LinkedIn Job Link'].startsWith('http') ? `<a href="${app['LinkedIn Job Link']}" target="_blank" rel="noopener noreferrer" class="btn-modal"><i class="fab fa-linkedin"></i> LinkedIn</a>` : ''}
+                    ${app['Company Website'] && app['Company Website'].startsWith('http') ? `<a href="${app['Company Website']}" target="_blank" rel="noopener noreferrer" class="btn-modal"><i class="fas fa-globe"></i> Company Site</a>` : ''}
                 </div>
             </div>
             

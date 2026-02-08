@@ -23,6 +23,9 @@ const App = {
             State.setResumes(resumes);
             State.setTemplates(templates);
             
+            // Destroy charts before re-rendering
+            Charts.destroyAll();
+            
             this.renderDashboard();
         } catch (error) {
             console.error('Failed to refresh data:', error);

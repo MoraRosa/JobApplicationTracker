@@ -73,6 +73,37 @@ body {
 }
 
 /* ===================================
+   CUSTOM SCROLLBAR
+   =================================== */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-secondary);
+    border-radius: 6px;
+    border: 2px solid var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-primary);
+}
+
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-secondary) var(--bg-tertiary);
+}
+
+/* ===================================
    HEADER
    =================================== */
 
@@ -512,6 +543,12 @@ body {
     background: var(--bg-tertiary);
 }
 
+.applications-table tbody tr.keyboard-selected {
+    background: var(--accent-light);
+    outline: 2px solid var(--accent-primary);
+    outline-offset: -2px;
+}
+
 .applications-table td {
     padding: 1rem;
     color: var(--text-primary);
@@ -668,6 +705,31 @@ body {
     font-weight: 400;
 }
 
+.btn-email {
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-email:hover {
+    background: #5a9067;
+    transform: translateY(-1px);
+}
+
+.btn-email i {
+    font-size: 1.1rem;
+}
+
 .detail-section {
     margin-bottom: 2rem;
 }
@@ -771,12 +833,74 @@ body {
         grid-template-columns: 1fr;
     }
     
+    .date-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .date-filter-bar select,
+    .date-filter-bar input[type="date"] {
+        width: 100%;
+    }
+    
+    .table-controls {
+        flex-direction: column;
+    }
+    
+    .search-box {
+        width: 100%;
+    }
+    
+    .filter-group {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .filter-group select {
+        width: 100%;
+    }
+    
+    .pagination-controls {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .pagination-buttons {
+        justify-content: center;
+    }
+    
+    #rowsPerPage {
+        width: 100%;
+    }
+    
     .table-wrapper {
         overflow-x: auto;
     }
     
     .applications-table {
         min-width: 800px;
+    }
+    
+    /* Modal optimization for mobile */
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-modal {
+        width: 100%;
+        justify-content: center;
     }
     
     .header h1 {

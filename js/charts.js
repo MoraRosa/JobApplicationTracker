@@ -15,6 +15,9 @@ const Charts = {
         this.renderStatusChart();
         this.renderFunnelChart();
         this.renderResponseChart();
+        this.renderInterviewSuccessChart();
+        this.renderOfferConversionChart();
+        this.renderResponseTimeChart();
     },
 
     /**
@@ -75,6 +78,7 @@ const Charts = {
         
         this.destroyAll();
         this.renderAll();
+        Tables.renderStats(); // Update stats with custom range
     },
 
     /**
@@ -175,7 +179,7 @@ const Charts = {
                 maintainAspectRatio: true,
                 plugins: {
                     legend: {
-                        position: 'right',
+                        position: 'bottom',
                         labels: {
                             color: isDark ? '#D4C5B4' : '#5D4037',
                             padding: 15,
@@ -300,10 +304,194 @@ const Charts = {
     },
 
     /**
+     * Render interview success rate chart
+     */
+    renderInterviewSuccessChart() {
+        const apps = this.getFilteredByDate();
+        
+        const totalApplied = apps.length;
+        const gotInterview = apps.filter(a => 
+            a['Application Status']?.toLowerCase().includes('interview') || 
+            a['Interview Stage']
+        ).length;
+        const noInterview = totalApplied - gotInterview;
+
+        const successRate = totalApplied > 0 ? ((gotInterview / totalApplied) * 100).toFixed(1) : 0;
+
+        const ctx = document.getElementById('interviewSuccessChart');
+        const isDark = Utils.isDarkTheme();
+        const colors = isDark ? CONFIG.COLORS.DARK : CONFIG.COLORS.LIGHT;
+        
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [`Got Interview (${successRate}%)`, 'No Interview'],
+                datasets: [{
+                    data: [gotInterview, noInterview],
+                    backgroundColor: [colors.PALETTE[3], colors.PALETTE[2]],
+                    borderWidth: 2,
+                    borderColor: isDark ? '#2B2320' : '#FFFFFF'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: isDark ? '#D4C5B4' : '#5D4037',
+                            padding: 15,
+                            font: { size: 12 }
+                        }
+                    }
+                }
+            }
+        });
+    },
+
+    /**
+     * Render offer conversion rate chart
+     */
+    renderOfferConversionChart() {
+        const apps = this.getFilteredByDate();
+        
+        const totalInterviews = apps.filter(a => 
+            a['Application Status']?.toLowerCase().includes('interview') || 
+            a['Interview Stage']
+        ).length;
+        
+        const gotOffer = apps.filter(a => a['Application Status'] === 'Offer').length;
+        const noOffer = totalInterviews - gotOffer;
+
+        const offerRate = totalInterviews > 0 ? ((gotOffer / totalInterviews) * 100).toFixed(1) : 0;
+
+        const ctx = document.getElementById('offerConversionChart');
+        const isDark = Utils.isDarkTheme();
+        const colors = isDark ? CONFIG.COLORS.DARK : CONFIG.COLORS.LIGHT;
+        
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: totalInterviews > 0 ? [`Got Offer (${offerRate}%)`, 'No Offer'] : ['No Interviews Yet'],
+                datasets: [{
+                    data: totalInterviews > 0 ? [gotOffer, noOffer] : [1],
+                    backgroundColor: totalInterviews > 0 ? [colors.PALETTE[5], colors.PALETTE[0]] : [colors.PALETTE[1]],
+                    borderWidth: 2,
+                    borderColor: isDark ? '#2B2320' : '#FFFFFF'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: isDark ? '#D4C5B4' : '#5D4037',
+                            padding: 15,
+                            font: { size: 12 }
+                        }
+                    }
+                }
+            }
+        });
+    },
+
+    /**
+     * Render average response time chart
+     */
+    renderResponseTimeChart() {
+        const apps = this.getFilteredByDate();
+        
+        // Calculate response times (apps that got a response)
+        const responseTimes = apps
+            .filter(a => {
+                const status = a['Application Status']?.toLowerCase() || '';
+                const days = parseInt(a['Days Since Applied']);
+                return status !== 'applied' && !isNaN(days);
+            })
+            .map(a => parseInt(a['Days Since Applied']));
+
+        if (responseTimes.length === 0) {
+            // No data - show placeholder
+            const ctx = document.getElementById('responseTimeChart');
+            const isDark = Utils.isDarkTheme();
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Waiting for responses...'],
+                    datasets: [{
+                        label: 'Days',
+                        data: [0],
+                        backgroundColor: isDark ? CONFIG.COLORS.DARK.PALETTE[1] : CONFIG.COLORS.LIGHT.PALETTE[1]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true } }
+                }
+            });
+            return;
+        }
+
+        // Group by time buckets
+        const buckets = {
+            '0-7 days': responseTimes.filter(d => d <= 7).length,
+            '8-14 days': responseTimes.filter(d => d > 7 && d <= 14).length,
+            '15-30 days': responseTimes.filter(d => d > 14 && d <= 30).length,
+            '30+ days': responseTimes.filter(d => d > 30).length
+        };
+
+        const ctx = document.getElementById('responseTimeChart');
+        const isDark = Utils.isDarkTheme();
+        const colors = isDark ? CONFIG.COLORS.DARK : CONFIG.COLORS.LIGHT;
+        
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(buckets),
+                datasets: [{
+                    label: 'Companies',
+                    data: Object.values(buckets),
+                    backgroundColor: colors.PRIMARY,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: { 
+                            stepSize: 1,
+                            color: isDark ? '#D4C5B4' : '#5D4037'
+                        },
+                        grid: {
+                            color: isDark ? '#3A2F2A' : '#E0D5C7'
+                        }
+                    },
+                    x: {
+                        ticks: { color: isDark ? '#D4C5B4' : '#5D4037' },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    },
+
+    /**
      * Destroy existing charts before re-rendering
      */
     destroyAll() {
-        const chartIds = ['timelineChart', 'statusChart', 'funnelChart', 'responseChart'];
+        const chartIds = ['timelineChart', 'statusChart', 'funnelChart', 'responseChart', 'interviewSuccessChart', 'offerConversionChart', 'responseTimeChart'];
         chartIds.forEach(id => {
             const canvas = document.getElementById(id);
             if (canvas) {

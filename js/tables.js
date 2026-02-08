@@ -7,7 +7,9 @@ const Tables = {
      * Render stats cards
      */
     renderStats() {
-        const stats = State.getStats();
+        // Use date-filtered applications
+        const filteredApps = Charts.getFilteredByDate();
+        const stats = State.getStats(filteredApps);
         
         document.getElementById('totalApps').textContent = stats.total;
         document.getElementById('appliedCount').textContent = stats.applied;
@@ -28,6 +30,7 @@ const Tables = {
         
         if (apps.length === 0) {
             tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">No applications found</td></tr>';
+            Keyboard.resetSelection();
             return;
         }
         
@@ -51,6 +54,9 @@ const Tables = {
             
             tbody.appendChild(tr);
         });
+
+        // Reset keyboard selection when table changes
+        Keyboard.resetSelection();
     },
 
     /**
@@ -64,6 +70,11 @@ const Tables = {
             <div class="detail-header">
                 <h2>${app['Company Name']}</h2>
                 <h3>${app['Job Title']}</h3>
+                ${app['Recruiter Email'] ? `
+                <button onclick="Tables.sendFollowUp('${app['Company Name']}', '${app['Job Title']}', '${app['Recruiter Email']}', '${app['Recruiter Name'] || ''}')" class="btn-email">
+                    <i class="fas fa-envelope"></i> Send Follow-Up
+                </button>
+                ` : ''}
             </div>
             
             <div class="detail-section">
@@ -198,6 +209,35 @@ const Tables = {
         navigator.clipboard.writeText(template['Email Body']).then(() => {
             alert('Template copied to clipboard!');
         });
+    },
+
+    /**
+     * Send follow-up email using mailto
+     */
+    sendFollowUp(companyName, jobTitle, recruiterEmail, recruiterName) {
+        // Get follow-up template
+        const template = State.templates.find(t => t['Template Name'] === 'Initial Follow-Up') || State.templates[0];
+        
+        if (!template) {
+            alert('No follow-up template found. Please add one in the Follow-Up Templates tab.');
+            return;
+        }
+
+        // Build email components
+        const subject = `Following up: ${jobTitle} at ${companyName}`;
+        
+        let body = template['Email Body'] || '';
+        
+        // Replace template placeholders
+        body = body.replace(/\{\{Name\}\}/g, recruiterName || 'Hiring Manager');
+        body = body.replace(/\{\{Role\}\}/g, jobTitle);
+        body = body.replace(/\{\{Company\}\}/g, companyName);
+        
+        // Create mailto link
+        const mailtoLink = `mailto:${recruiterEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        // Open email client
+        window.location.href = mailtoLink;
     }
 };
 

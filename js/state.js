@@ -46,21 +46,21 @@ const State = {
     },
     
     /**
-     * Get stats from current applications
+     * Get stats from applications (optionally filtered)
      */
-    getStats() {
-        const apps = this.applications;
+    getStats(apps = null) {
+        const data = apps || this.applications;
         
         return {
-            total: apps.length,
-            applied: apps.filter(a => a['Application Status'] === 'Applied').length,
-            interviews: apps.filter(a => 
+            total: data.length,
+            applied: data.filter(a => a['Application Status'] === 'Applied').length,
+            interviews: data.filter(a => 
                 a['Application Status']?.toLowerCase().includes('interview') || 
                 a['Interview Stage']
             ).length,
-            offers: apps.filter(a => a['Application Status'] === 'Offer').length,
-            rejected: apps.filter(a => a['Application Status'] === 'Rejected').length,
-            stale: apps.filter(a => a['Stale App Flag'] === 'STALE').length
+            offers: data.filter(a => a['Application Status'] === 'Offer').length,
+            rejected: data.filter(a => a['Application Status'] === 'Rejected').length,
+            stale: data.filter(a => a['Stale App Flag'] === 'STALE').length
         };
     },
     

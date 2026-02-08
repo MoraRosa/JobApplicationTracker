@@ -9,6 +9,7 @@ const App = {
     async init() {
         this.loadTheme();
         this.setupEventListeners();
+        Keyboard.init(); // Initialize keyboard shortcuts
         await this.loadAllData();
     },
 
@@ -136,6 +137,9 @@ const App = {
         // Theme toggle
         document.getElementById('themeToggle').addEventListener('click', () => this.toggleTheme());
         
+        // Keyboard help
+        document.getElementById('keyboardHelpBtn').addEventListener('click', () => Keyboard.showShortcutsHelp());
+        
         // Refresh button
         document.getElementById('refreshBtn').addEventListener('click', () => this.refreshData());
         
@@ -187,6 +191,7 @@ const App = {
                 Charts.dateRange = value;
                 Charts.destroyAll();
                 Charts.renderAll();
+                Tables.renderStats(); // Update stats when date range changes
             }
         });
     }

@@ -24,12 +24,14 @@ const Charts = {
      * Filter applications by date range
      */
     getFilteredByDate() {
-        const apps = State.applications.filter(a => a['Date Applied']);
-        
+        // In 'all' mode, return ALL applications (even those without dates)
         if (this.dateRange === 'all') {
-            return apps;
+            return State.applications;
         }
 
+        // For other filters, only use apps with dates
+        const apps = State.applications.filter(a => a['Date Applied']);
+        
         const now = new Date();
         const cutoffDate = new Date();
 

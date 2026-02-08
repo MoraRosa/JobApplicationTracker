@@ -22,7 +22,14 @@ const Utils = {
      */
     formatMoney(value) {
         if (!value || value === '') return '-';
-        const num = typeof value === 'string' ? parseFloat(value) : value;
+        
+        // If it's already a formatted currency string, return it
+        if (typeof value === 'string' && value.includes('$')) {
+            return value;
+        }
+        
+        // Otherwise parse and format
+        const num = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.-]/g, '')) : value;
         if (isNaN(num)) return '-';
         return new Intl.NumberFormat('en-US', { 
             style: 'currency', 

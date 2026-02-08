@@ -57,16 +57,6 @@ const Tables = {
      * Show application detail modal
      */
     showApplicationDetail(app) {
-        // Debug: check what salary data we have
-        console.log('=== SALARY DEBUG ===');
-        console.log('Full app object:', app);
-        console.log('Salary Range Low:', app['Salary Range Low'], typeof app['Salary Range Low']);
-        console.log('Salary Range High:', app['Salary Range High'], typeof app['Salary Range High']);
-        console.log('My Minimum Salary:', app['My Minimum Salary'], typeof app['My Minimum Salary']);
-        console.log('Formatted Low:', Utils.formatMoney(app['Salary Range Low']));
-        console.log('Formatted High:', Utils.formatMoney(app['Salary Range High']));
-        console.log('Formatted Min:', Utils.formatMoney(app['My Minimum Salary']));
-        
         const modal = document.getElementById('detailModal');
         const modalBody = document.getElementById('modalBody');
         

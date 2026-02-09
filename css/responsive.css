@@ -1,0 +1,97 @@
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    
+    .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .charts-section {
+        grid-template-columns: 1fr;
+    }
+    
+    .date-filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .date-filter-bar select,
+    .date-filter-bar input[type="date"] {
+        width: 100%;
+    }
+    
+    .table-controls {
+        flex-direction: column;
+    }
+    
+    .search-box {
+        width: 100%;
+    }
+    
+    .filter-group {
+        width: 100%;
+        flex-direction: column;
+    }
+    
+    .filter-group select {
+        width: 100%;
+    }
+    
+    .pagination-controls {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .pagination-buttons {
+        justify-content: center;
+    }
+    
+    #rowsPerPage {
+        width: 100%;
+    }
+    
+    .table-wrapper {
+        overflow-x: auto;
+    }
+    
+    .applications-table {
+        min-width: 800px;
+    }
+    
+    /* Modal optimization for mobile */
+    .modal-content {
+        width: 95%;
+        max-height: 95vh;
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .detail-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-modal {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .header h1 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-section {
+        grid-template-columns: 1fr;
+    }
+}

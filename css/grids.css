@@ -1,0 +1,64 @@
+/* ===================================
+   RESUME & TEMPLATE GRIDS
+   =================================== */
+
+.resume-grid, .templates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.resume-card, .template-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+
+.resume-card:hover, .template-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.resume-card h3, .template-card h3 {
+    color: var(--accent-primary);
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+}
+
+.resume-card p, .template-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.resume-card a, .template-card button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--accent-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    transition: background 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.resume-card a:hover, .template-card button:hover {
+    background: var(--accent-secondary);
+}
+
+.template-body {
+    background: var(--bg-tertiary);
+    padding: 1rem;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    margin-top: 1rem;
+    color: var(--text-secondary);
+}

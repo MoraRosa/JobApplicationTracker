@@ -1,0 +1,55 @@
+/* ===================================
+   CSS VARIABLES - THEME COLORS
+   =================================== */
+
+:root {
+    /* Light Mode - Coffee & Cream */
+    --bg-primary: #FAF7F2;
+    --bg-secondary: #FFFFFF;
+    --bg-tertiary: #F5EFE7;
+    --bg-hover: #EDE4D9;
+    
+    --text-primary: #3E2723;
+    --text-secondary: #5D4037;
+    --text-muted: #8D6E63;
+    
+    --accent-primary: #6F4E37;
+    --accent-secondary: #A0826D;
+    --accent-light: #D4B5A0;
+    
+    --border-color: #E0D5C7;
+    --shadow-sm: 0 2px 4px rgba(62, 39, 35, 0.08);
+    --shadow-md: 0 4px 12px rgba(62, 39, 35, 0.12);
+    --shadow-lg: 0 8px 24px rgba(62, 39, 35, 0.16);
+    
+    --success: #4A7C59;
+    --warning: #D4A574;
+    --error: #ff0000;
+    --info: #6F8FAF;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode - Espresso & Mocha */
+    --bg-primary: #1A1412;
+    --bg-secondary: #2B2320;
+    --bg-tertiary: #3A2F2A;
+    --bg-hover: #4A3F3A;
+    
+    --text-primary: #F5E6D3;
+    --text-secondary: #D4C5B4;
+    --text-muted: #A0927F;
+    
+    --accent-primary: #C4A77D;
+    --accent-secondary: #8B7355;
+    --accent-light: #6F5A45;
+    
+    --border-color: #4A3F3A;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+    
+    --success: #6FA97D;
+    --warning: #E6B88A;
+    --error: #ff0000;
+    --info: #8FAAC4;
+}

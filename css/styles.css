@@ -24,7 +24,7 @@
     
     --success: #4A7C59;
     --warning: #D4A574;
-    --error: #A0522D;
+    --error: #ff0000;
     --info: #6F8FAF;
 }
 
@@ -50,7 +50,7 @@
     
     --success: #6FA97D;
     --warning: #E6B88A;
-    --error: #D4826D;
+    --error: #ff0000;
     --info: #8FAAC4;
 }
 

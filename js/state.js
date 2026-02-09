@@ -54,10 +54,12 @@ const State = {
         return {
             total: data.length,
             applied: data.filter(a => a['Application Status'] === 'Applied').length,
-            interviews: data.filter(a => 
-                a['Application Status']?.toLowerCase().includes('interview') || 
-                a['Interview Stage']
-            ).length,
+            interviews: data.filter(a => {
+                const status = a['Application Status']?.toLowerCase() || '';
+                return status.includes('interview') || 
+                       status.includes('recruiter screen') || 
+                       a['Interview Stage'];
+            }).length,
             offers: data.filter(a => a['Application Status'] === 'Offer').length,
             rejected: data.filter(a => a['Application Status'] === 'Rejected').length,
             stale: data.filter(a => a['Stale App Flag'] === 'STALE').length

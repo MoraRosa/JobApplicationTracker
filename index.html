@@ -20,7 +20,6 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
-
 <body>
     <!-- Header -->
     <header class="header">
@@ -287,6 +286,17 @@
         </div>
     </div>
 
+    <!-- Custom Modal for Alerts -->
+    <div id="customModal" class="custom-modal">
+        <div class="custom-modal-content">
+            <div id="customModalBody"></div>
+            <button id="customModalOk" class="btn-primary">OK</button>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
     <!-- JavaScript - Load in order -->
     <script src="js/config.js"></script>
     <script src="js/utils.js"></script>
@@ -295,6 +305,7 @@
     <script src="js/charts.js"></script>
     <script src="js/tables.js"></script>
     <script src="js/filters.js"></script>
+    <script src="js/ui.js"></script>
     <script src="js/keyboard.js"></script>
     <script src="js/main.js"></script>
 </body>

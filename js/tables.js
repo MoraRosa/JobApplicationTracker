@@ -7,11 +7,14 @@ const Tables = {
      * Render stats cards
      */
     renderStats() {
-        // Use date-filtered applications
+        // TOTAL APPLICATIONS: Always show ALL (never filtered by date)
+        const totalApps = State.applications.length;
+        
+        // OTHER STATS: Use date-filtered applications
         const filteredApps = Charts.getFilteredByDate();
         const stats = State.getStats(filteredApps);
         
-        document.getElementById('totalApps').textContent = stats.total;
+        document.getElementById('totalApps').textContent = totalApps; // Always all companies
         document.getElementById('appliedCount').textContent = stats.applied;
         document.getElementById('interviewCount').textContent = stats.interviews;
         document.getElementById('offerCount').textContent = stats.offers;
@@ -207,7 +210,7 @@ const Tables = {
         if (!template) return;
         
         navigator.clipboard.writeText(template['Email Body']).then(() => {
-            alert('Template copied to clipboard!');
+            UI.toast('Template copied to clipboard!', 'success');
         });
     },
 
@@ -219,7 +222,7 @@ const Tables = {
         const template = State.templates.find(t => t['Template Name'] === 'Initial Follow-Up') || State.templates[0];
         
         if (!template) {
-            alert('No follow-up template found. Please add one in the Follow-Up Templates tab.');
+            UI.alert('No follow-up template found. Please add one in the Follow-Up Templates tab.');
             return;
         }
 
@@ -238,6 +241,8 @@ const Tables = {
         
         // Open email client
         window.location.href = mailtoLink;
+        
+        UI.toast('Opening email client...', 'info');
     }
 };
 

@@ -28,9 +28,11 @@ const App = {
             Charts.destroyAll();
             
             this.renderDashboard();
+            
+            UI.toast('Data refreshed successfully!', 'success');
         } catch (error) {
             console.error('Failed to refresh data:', error);
-            alert('Failed to refresh data. Please try again.');
+            UI.toast('Failed to refresh data. Please try again.', 'error');
         }
     },
 
@@ -177,6 +179,11 @@ const App = {
             if (e.target.id === 'detailModal') {
                 document.getElementById('detailModal').classList.remove('active');
             }
+        });
+
+        // Custom modal OK button
+        document.getElementById('customModalOk').addEventListener('click', () => {
+            document.getElementById('customModal').classList.remove('active');
         });
 
         // Date range filter

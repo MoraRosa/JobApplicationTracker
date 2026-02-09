@@ -157,23 +157,7 @@ const Keyboard = {
      * Show keyboard shortcuts help
      */
     showShortcutsHelp() {
-        const helpText = `
-KEYBOARD SHORTCUTS:
-
-Navigation:
-  ↑ / ↓        Navigate table rows
-  Enter        Open selected row details
-  Escape       Close modal / Clear input
-
-Search & Filter:
-  /            Focus search box
-  Ctrl/Cmd+R   Refresh data
-
-Help:
-  ?            Show this help
-        `;
-
-        alert(helpText);
+        UI.showKeyboardHelp();
     }
 };
 

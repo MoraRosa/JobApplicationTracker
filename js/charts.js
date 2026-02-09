@@ -70,7 +70,7 @@ const Charts = {
         const end = document.getElementById('endDate').value;
 
         if (!start || !end) {
-            alert('Please select both start and end dates');
+            UI.alert('Please select both start and end dates');
             return;
         }
 
@@ -201,11 +201,14 @@ const Charts = {
         
         const total = apps.length;
         const applied = apps.filter(a => a['Application Status'] === 'Applied').length;
-        const screening = apps.filter(a => a['Application Status']?.toLowerCase().includes('screening')).length;
-        const interviews = apps.filter(a => 
-            a['Application Status']?.toLowerCase().includes('interview') || 
-            a['Interview Stage']
-        ).length;
+        const screening = apps.filter(a => {
+            const status = a['Application Status']?.toLowerCase() || '';
+            return status.includes('screening') || status.includes('recruiter screen');
+        }).length;
+        const interviews = apps.filter(a => {
+            const status = a['Application Status']?.toLowerCase() || '';
+            return status.includes('interview') || a['Interview Stage'];
+        }).length;
         const offers = apps.filter(a => a['Application Status'] === 'Offer').length;
 
         const ctx = document.getElementById('funnelChart');
@@ -312,10 +315,12 @@ const Charts = {
         const apps = this.getFilteredByDate();
         
         const totalApplied = apps.length;
-        const gotInterview = apps.filter(a => 
-            a['Application Status']?.toLowerCase().includes('interview') || 
-            a['Interview Stage']
-        ).length;
+        const gotInterview = apps.filter(a => {
+            const status = a['Application Status']?.toLowerCase() || '';
+            return status.includes('interview') || 
+                   status.includes('recruiter screen') || 
+                   a['Interview Stage'];
+        }).length;
         const noInterview = totalApplied - gotInterview;
 
         const successRate = totalApplied > 0 ? ((gotInterview / totalApplied) * 100).toFixed(1) : 0;
